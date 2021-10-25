@@ -6,18 +6,18 @@ import androidx.room.PrimaryKey
 import com.airlineassignment.model.Roster
 
 
-@Entity(tableName = "roster")
+@Entity(tableName = "roster", primaryKeys = ["Captain", "Date", "Destination", "Time_Arrive"])
 data class RosterEntity(
     @ColumnInfo(name = "Aircraft Type")
     var aircraftType: String?,
     @ColumnInfo(name = "Captain")
-    var captain: String?,
+    var captain: String = "",
     @ColumnInfo(name = "Date")
-    var date: String?,
+    var date: String = "",
     @ColumnInfo(name = "Departure")
     var departure: String?,
     @ColumnInfo(name = "Destination")
-    var destination: String?,
+    var destination: String = "",
     @ColumnInfo(name = "DutyCode")
     var dutyCode: String?,
     @ColumnInfo(name = "DutyID")
@@ -31,12 +31,27 @@ data class RosterEntity(
     @ColumnInfo(name = "Tail")
     var tail: String?,
     @ColumnInfo(name = "Time_Arrive")
-    var timeArrive: String?,
+    var timeArrive: String = "",
     @ColumnInfo(name = "Time_Depart")
     var timeDepart: String?
-) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Long? = null
+)
+
+fun RosterEntity.asDomainObj(): Roster {
+    return Roster(
+        aircraftType = aircraftType,
+        captain = captain,
+        date = date,
+        departure = departure,
+        destination = destination,
+        dutyCode = dutyCode,
+        dutyID = dutyID,
+        firstOfficer = firstOfficer,
+        flightAttendant = flightAttendant,
+        flightnr = flightnr,
+        tail = tail,
+        timeArrive = timeArrive,
+        timeDepart = timeDepart,
+    )
 }
 
 fun List<RosterEntity>.asDomainModel(): List<Roster> {

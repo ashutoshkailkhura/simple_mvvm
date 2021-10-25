@@ -1,9 +1,10 @@
-package com.airlineassignment.ui
+package com.airlineassignment.ui.home
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -45,21 +46,13 @@ class RosterListAdapter(private val onRosterClick: (RosterEntity) -> Unit) :
             oldItem: RosterDataItem,
             newItem: RosterDataItem
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
     }
 
     sealed class RosterDataItem {
-
-        data class RosterItem(val roster: RosterEntity) : RosterDataItem() {
-            override val id: Long = roster.id!!
-        }
-
-        data class Header(val date: String) : RosterDataItem() {
-            override val id = Long.MIN_VALUE
-        }
-
-        abstract val id: Long
+        data class RosterItem(val roster: RosterEntity) : RosterDataItem()
+        data class Header(val date: String) : RosterDataItem()
     }
 
     class HeaderViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
@@ -82,6 +75,8 @@ class RosterListAdapter(private val onRosterClick: (RosterEntity) -> Unit) :
                 "${roster.roster.departure} - ${roster.roster.destination}"
             view.findViewById<TextView>(R.id.tv_airline_time).text =
                 "${roster.roster.timeDepart} - ${roster.roster.timeArrive}"
+            view.findViewById<ConstraintLayout>(R.id.ly_roster_item)
+                .setOnClickListener { onRosterClick(roster.roster) }
         }
 
         companion object {

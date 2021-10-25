@@ -8,13 +8,9 @@ import com.airlineassignment.data.remote.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-
 class RosterRepository(private val database: AppDatabase) {
 
     fun rosters(): LiveData<List<RosterEntity>> = database.rosterDao.getRoster()
-//        Transformations.map(database.rosterDao.getRoster()) {
-//            it.asDomainModel()
-//        }
 
     suspend fun refreshRoster() {
         withContext(Dispatchers.IO) {

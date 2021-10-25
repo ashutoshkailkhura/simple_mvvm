@@ -34,38 +34,22 @@ class RosterDto : ArrayList<RosterDto.RosterItemDto>() {
     )
 }
 
-/**
- * Convert Network results to database objects
- */
 fun RosterDto.asDatabaseModel(): Array<RosterEntity> {
     return map {
         RosterEntity(
             aircraftType = it.aircraftType,
-            captain = it.captain,
-            date = it.date,
+            captain = it.captain!!,
+            date = it.date!!,
             departure = it.departure,
-            destination = it.destination,
+            destination = it.destination!!,
             dutyCode = it.dutyCode,
             dutyID = it.dutyID,
             firstOfficer = it.firstOfficer,
             flightAttendant = it.flightAttendant,
             flightnr = it.flightnr,
             tail = it.tail,
-            timeArrive = it.timeArrive,
+            timeArrive = it.timeArrive!!,
             timeDepart = it.timeDepart,
         )
     }.toTypedArray()
 }
-
-
-/**
- * Convert Network results to domain objects
- */
-//fun List<RosterDto>.asDomainModel(): List<Roster> {
-//    return map {
-//        Roster(
-//
-//        )
-//    }
-//}
-

@@ -1,4 +1,4 @@
-package com.airlineassignment.ui
+package com.airlineassignment.ui.home
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

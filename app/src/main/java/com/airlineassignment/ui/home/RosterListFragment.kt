@@ -1,15 +1,19 @@
-package com.airlineassignment.ui
+package com.airlineassignment.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airlineassignment.R
+import com.airlineassignment.data.local.asDomainObj
+import kotlinx.coroutines.*
 
 class RosterListFragment : Fragment() {
 
@@ -34,6 +38,12 @@ class RosterListFragment : Fragment() {
         RVrosterlist = view.findViewById(R.id.rv_roster_list)
         RefreshView = view.findViewById(R.id.refresh_roster_list)
 
+        RVrosterlist.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            )
+        )
         return view.rootView
     }
 
@@ -41,17 +51,36 @@ class RosterListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = RosterListAdapter {
-            Toast.makeText(requireContext(), "${it.aircraftType}", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(
+                RosterListFragmentDirections.actionRosterListFragmentToDetailFragment(
+                    it.asDomainObj()
+                )
+            )
         }
 
         RVrosterlist.adapter = adapter
 
+        RefreshView.setOnRefreshListener {
+            Log.i("XXX", "onRefresh called from SwipeRefreshLayout")
+            RefreshView.isRefreshing = true
+            myTesting()
+            adapter.submitList(listOf())
+        }
         viewModel.rosterList.observe(viewLifecycleOwner, {
             it.let { adapter.addHeaderAndSubmitList(it) }
         })
 
 
         viewModel.getRosterList()
+    }
+
+    private fun myTesting() {
+        CoroutineScope(Dispatchers.Default).launch {
+            viewModel.getRosterList()
+            withContext(Dispatchers.Main) {
+                RefreshView.isRefreshing = false
+            }
+        }
     }
 
 }

@@ -7,7 +7,20 @@
 
     <fragment
         android:id="@+id/rosterListFragment"
-        android:name="com.airlineassignment.ui.RosterListFragment"
+        android:name="com.airlineassignment.ui.home.RosterListFragment"
         android:label="fragment_roster_list"
-        tools:layout="@layout/fragment_roster_list" />
+        tools:layout="@layout/fragment_roster_list" >
+        <action
+            android:id="@+id/action_rosterListFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.airlineassignment.ui.detail.DetailFragment"
+        android:label="detail_fragment"
+        tools:layout="@layout/detail_fragment" >
+        <argument
+            android:name="roster"
+            app:argType="com.airlineassignment.model.Roster" />
+    </fragment>
 </navigation>
